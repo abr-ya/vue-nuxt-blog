@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="container">
-      <Logo />
+      <Header />
       <h1>Hello, Vue!</h1>
     </div>
     <div class="container">
@@ -9,11 +9,14 @@
         <nuxt-link to="/user/">
           User
         </nuxt-link>
-        <nuxt-link to="/products/1">
-          Products 1
+        <nuxt-link to="/user/1">
+          User 1
         </nuxt-link>
-        <nuxt-link to="/products/2">
-          Products 2
+        <nuxt-link to="/user/2">
+          User 2
+        </nuxt-link>
+        <nuxt-link to="/user/rrr">
+          User rrr
         </nuxt-link>
       </div>
       <button @click="buttonHandler">
@@ -24,7 +27,12 @@
 </template>
 
 <script>
+import Header from '~/components/Header.vue'
+
 export default {
+  components: {
+    Header
+  },
   methods: {
     buttonHandler () {
       // eslint-disable-next-line no-console
@@ -36,46 +44,5 @@ export default {
 </script>
 
 <style>
-.container {
-  margin: 0 auto;
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-}
 
-.title {
-  font-family:
-    'Quicksand',
-    'Source Sans Pro',
-    -apple-system,
-    BlinkMacSystemFont,
-    'Segoe UI',
-    Roboto,
-    'Helvetica Neue',
-    Arial,
-    sans-serif;
-  display: block;
-  font-weight: 300;
-  font-size: 100px;
-  color: #35495e;
-  letter-spacing: 1px;
-}
-
-.subtitle {
-  font-weight: 300;
-  font-size: 42px;
-  color: #526488;
-  word-spacing: 5px;
-  padding-bottom: 15px;
-}
-
-.links {
-  padding-top: 15px;
-  min-width: 300px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
 </style>
