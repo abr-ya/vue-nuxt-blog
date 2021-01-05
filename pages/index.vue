@@ -1,7 +1,7 @@
 <template>
   <div class="home-page container">
     <section class="intro">
-      <h1>Get the latest posts</h1>
+      <h1>Main page</h1>
     </section>
     <PostsList /><!-- section -->
   </div>
