@@ -1,6 +1,5 @@
 <template>
   <div class="wrapper">
-    <Header />
     <div class="single-post-page">
       <section class="post">
         <h1 class="post-title">
@@ -26,17 +25,17 @@
 </template>
 
 <script>
-import Header from '~/components/Header.vue'
+// import Header from '~/components/Header.vue'
 
-export default {
-  components: {
-    Header
-  },
-  validate (data) {
-    // console.log(data)
-    return /^\d+$/.test(data.params.id) // id - число
-  }
-}
+// export default {
+//   components: {
+//     Header
+//   },
+//   validate (data) {
+//     // console.log(data)
+//     return /^\d+$/.test(data.params.id) // id - число
+//   }
+// }
 </script>
 
 <style scoped>

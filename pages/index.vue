@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import PostPreview from '@/components/posts/PostPreview'
+import PostPreview from '@/components/Posts/PostPreview'
 
 export default {
   components: {
