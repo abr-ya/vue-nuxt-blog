@@ -3,35 +3,16 @@
     <section class="intro">
       <h1>Get the latest posts</h1>
     </section>
-    <section class="featured-posts">
-      <PostPreview
-        id="1"
-        thumb="https://picsum.photos/seed/001/400"
-        title="Post Title 1"
-        pre-text="Prev text 001"
-      />
-      <PostPreview
-        id="2"
-        thumb="https://picsum.photos/seed/002/400"
-        title="Post Title 2"
-        pre-text="Prev text 002"
-      />
-      <PostPreview
-        id="3"
-        thumb="https://picsum.photos/seed/003/400"
-        title="Post Title 3"
-        pre-text="Prev text 003"
-      />
-    </section>
+    <PostsList /><!-- section -->
   </div>
 </template>
 
 <script>
-import PostPreview from '@/components/Posts/PostPreview'
+import PostsList from '@/components/Posts/PostsList'
 
 export default {
   components: {
-    PostPreview
+    PostsList
   }
 }
 </script>

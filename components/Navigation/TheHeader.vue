@@ -4,12 +4,17 @@
       <TheSideNavToggle @toggle="$emit('sidenavToggle')" />
       <div class="logo">
         <nuxt-link to="/">
-          WD BLOG
+          LOGO
         </nuxt-link>
       </div>
       <div class="spacer" />
       <div class="navigation-items">
         <ul class="nav-list">
+          <li class="nav-item">
+            <nuxt-link to="/" exact>
+              Home
+            </nuxt-link>
+          </li>
           <li class="nav-item">
             <nuxt-link to="/posts">
               Blog

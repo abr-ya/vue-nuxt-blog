@@ -1,19 +1,21 @@
 <template>
-  <div class="wrapper">
-    <div class="posts-page">
-      <h1>Posts page</h1>
-    </div>
+  <div class="posts-page container">
+    <h1>Posts page</h1>
+    <PostsList /><!-- section -->
   </div>
 </template>
 
 <script>
+import PostsList from '@/components/Posts/PostsList'
 
+export default {
+  components: {
+    PostsList
+  }
+}
 </script>
 
 <style scoped>
-  .posts-page {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
+/* .posts-page {
+} */
 </style>
