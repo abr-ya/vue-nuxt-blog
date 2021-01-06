@@ -25,7 +25,7 @@ export default {
   },
   computed: {
     postLink () {
-      return this.isAdmin ? `/admin/${this.id}` : `/post/${this.id}`
+      return this.isAdmin ? `/admin/${this.id}` : `/posts/${this.id}`
     }
   }
 }
