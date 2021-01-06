@@ -15,40 +15,26 @@ export default {
   components: {
     PostsList
   },
-  asyncData (context) {
-    return new Promise((resolve, reject) => {
-      // eslint-disable-next-line nuxt/no-timing-in-fetch-data
-      setTimeout(() => {
-        resolve({
-          loadedPosts: [
-            { id: '1', title: 'First Post', preText: 'Prev text first post', thumb: 'https://picsum.photos/seed/003/400' },
-            { id: '2', title: 'Second Post', preText: 'Prev text second post', thumb: 'https://picsum.photos/seed/002/400' },
-            { id: '3', title: 'Third Post', preText: 'Prev text third post', thumb: 'https://picsum.photos/seed/001/400' }
-          ]
-        })
-      }, 1000)
-    })
-      .then((data) => {
-        return data
-      })
-      .catch((e) => {
-        context.error(new Error())
-      })
-  }
-  // для показа лоадера
-  // data () {
-  //   return {
-  //     loadedPosts: []
-  //   }
+  // fetch (context) {
+  //   // не грузить, если есть
+  //   // но не используем - в store лучше!
+  //   // if (context.store.state.loadedPosts.length) { return null }
+  //     // здесь был промис - ушел в стор
+  //   })
+  //     .then((data) => {
+  //       context.store.commit('setPosts', data.loadedPosts)
+  //     })
+  //     .catch((e) => {
+  //       context.error(new Error())
+  //     })
   // },
+  computed: {
+    loadedPosts () {
+      return this.$store.getters.loadedPosts
+    }
+  }
   // created () {
-  //   setTimeout(() => {
-  //     this.loadedPosts = [
-  //       { id: '1', title: 'First Post', preText: 'Prev text first post', thumb: 'https://picsum.photos/seed/003/400' },
-  //       { id: '2', title: 'Second Post', preText: 'Prev text second post', thumb: 'https://picsum.photos/seed/002/400' },
-  //       { id: '3', title: 'Third Post', preText: 'Prev text third post', thumb: 'https://picsum.photos/seed/001/400' }
-  //     ]
-  //   }, 1500)
+  //   this.$store.dispatch('setPosts', this.loadedPosts)
   // }
 }
 </script>
