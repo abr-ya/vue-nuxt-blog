@@ -3,7 +3,10 @@
     <section class="intro">
       <h1>Main page</h1>
     </section>
-    <PostsList /><!-- section -->
+    <PostsList v-if="loadedPosts.length" :posts="loadedPosts" /><!-- section -->
+    <div v-else>
+      Постов нет или они грузятся...
+    </div>
   </div>
 </template>
 
@@ -13,6 +16,20 @@ import PostsList from '@/components/Posts/PostsList'
 export default {
   components: {
     PostsList
+  },
+  data () {
+    return {
+      loadedPosts: []
+    }
+  },
+  created () {
+    setTimeout(() => {
+      this.loadedPosts = [
+        { id: '1', title: 'First Post', preText: 'Prev text first post', thumb: 'https://picsum.photos/seed/003/400' },
+        { id: '2', title: 'Second Post', preText: 'Prev text second post', thumb: 'https://picsum.photos/seed/002/400' },
+        { id: '3', title: 'Third Post', preText: 'Prev text third post', thumb: 'https://picsum.photos/seed/001/400' }
+      ]
+    }, 1500)
   }
 }
 </script>
