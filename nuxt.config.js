@@ -42,5 +42,10 @@ export default {
 
   // Build Configuration (https://go.nuxtjs.dev/config-build)
   build: {
+  },
+
+  // env config
+  env: {
+    BACK: process.env.BACK || 'https://nuxt-blog-356f0-default-rtdb.europe-west1.firebasedatabase.app/'
   }
 }

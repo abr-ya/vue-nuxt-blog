@@ -9,6 +9,9 @@
     <AppControlInput v-model="editedPost.thumb">
       Thumbnail Link
     </AppControlInput>
+    <AppControlInput v-model="editedPost.prevText">
+      Preview Text
+    </AppControlInput>
     <AppControlInput
       v-model="editedPost.content"
       control-type="textarea"
@@ -48,8 +51,8 @@ export default {
   data () {
     return {
       editedPost: this.post
-        ? { ...this.post }
-        : { author: '', title: '', thumb: '', content: '' }
+        ? this.post
+        : { author: '111', title: '', thumb: '', prevText: '', content: '' }
     }
   },
   methods: {
@@ -57,6 +60,7 @@ export default {
       // save the post
       // eslint-disable-next-line no-console
       console.log(this.editedPost)
+      this.$emit('submit', this.editedPost)
     },
     onCancel () {
       // navigate back

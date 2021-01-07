@@ -7,7 +7,7 @@
       />
       <div class="post-content">
         <h2>{{ title }}</h2>
-        <p>{{ preText }}</p>
+        <p>{{ prevText }}</p>
       </div>
     </article>
   </nuxt-link>
@@ -20,7 +20,7 @@ export default {
     id: { type: String, required: true },
     isAdmin: { type: Boolean, required: true },
     title: { type: String, required: true },
-    preText: { type: String, required: true },
+    prevText: { type: String, required: true },
     thumb: { type: String, required: true }
   },
   computed: {

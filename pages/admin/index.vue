@@ -8,7 +8,7 @@
     </section>
     <section class="my-posts">
       <h2>Edit Post:</h2>
-      <PostsList is-admin />
+      <PostsList is-admin :posts="loadedPosts" />
     </section>
   </div>
 </template>
@@ -21,6 +21,11 @@ export default {
   components: {
     PostsList,
     AppButton
+  },
+  computed: {
+    loadedPosts () {
+      return this.$store.getters.loadedPosts
+    }
   }
 }
 </script>

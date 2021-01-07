@@ -3,7 +3,7 @@
     <div class="single-post-page">
       <section class="post">
         <h1 class="post-title">
-          {{ post.title }} {{ $route.params.id }}
+          {{ post.title }}
         </h1>
         <div class="post-details">
           <div class="post-detail">
@@ -19,31 +19,22 @@
       </section>
       <section class="post-feedback">
         <p>Let me know ...</p>
-        <p>ID из контекста: {{ post.idTest }}</p>
+        <p>ID из роутера: {{ $route.params.id }}</p>
       </section>
     </div>
   </div>
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
-  components: { },
-  asyncData (context, callback) {
-    // eslint-disable-next-line nuxt/no-timing-in-fetch-data
-    setTimeout(() => {
-      callback(null, {
-        post: {
-          id: '1',
-          idTest: context.params.id,
-          title: 'First Post',
-          preText: 'Prev text first post',
-          content: 'Здесь должен быть весь текст поста, большой текст большого поста, который...',
-          author: 'Вася Тёркин',
-          date: new Date(),
-          thumb: 'https://picsum.photos/seed/003/400'
-        }
+  asyncData (context) {
+    return axios.get(`${process.env.BACK}/posts/${context.params.id}.json`)
+      .then((res) => {
+        return { post: res.data }
       })
-    }, 1000)
+      .catch(e => context.error(e))
   }
 }
 </script>
