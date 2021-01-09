@@ -8,7 +8,6 @@
 </template>
 
 <script>
-import axios from 'axios'
 import AdminPostForm from '@/components/Admin/AdminPostForm'
 
 export default {
@@ -19,15 +18,10 @@ export default {
   methods: {
     onSubmitted (postData) {
       // console.log(process.env.BACK, postData)
-      axios.post(`${process.env.BACK}/posts.json`,
-        { ...postData, date: new Date() })
-        .then((res) => {
-          // eslint-disable-next-line no-console
-          console.log(res) // убедимся, что всё хорошо
-          this.$router.push('/admin') // венемся в админку
-        })
-        // eslint-disable-next-line no-console
-        .catch(error => console.log(error))
+      // запрос переехал в store
+      this.$store.dispatch('addPost', postData).then(() => {
+        this.$router.push('/admin') // вернемся в админку
+      })
     }
   }
 }

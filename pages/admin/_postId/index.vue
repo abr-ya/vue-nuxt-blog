@@ -21,22 +21,19 @@ export default {
     return axios.get(`${process.env.BACK}/posts/${context.params.postId}.json`)
       .then((res) => {
         // console.log(res.data)
-        return { post: res.data }
+        return {
+          post: { id: context.params.postId, ...res.data }
+        }
       })
       .catch(e => context.error(e))
   },
   methods: {
     onSubmitted (postData) {
       // console.log(process.env.BACK, postData)
-      axios.put(`${process.env.BACK}/posts/${this.$route.params.postId}.json`, postData)
-        // eslint-disable-next-line no-console
-        .then((res) => {
-          // eslint-disable-next-line no-console
-          console.log(res) // убедимся, что всё хорошо
-          this.$router.push('/admin') // венемся в админку
-        })
-        // eslint-disable-next-line no-console
-        .catch(error => console.log(error))
+      // запрос переехал в store
+      this.$store.dispatch('editPost', postData).then(() => {
+        this.$router.push('/admin') // вернемся в админку
+      })
     }
   }
 }

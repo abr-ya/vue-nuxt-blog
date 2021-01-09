@@ -15,27 +15,11 @@ export default {
   components: {
     PostsList
   },
-  // fetch (context) {
-  //   // не грузить, если есть
-  //   // но не используем - в store лучше!
-  //   // if (context.store.state.loadedPosts.length) { return null }
-  //     // здесь был промис - ушел в стор
-  //   })
-  //     .then((data) => {
-  //       context.store.commit('setPosts', data.loadedPosts)
-  //     })
-  //     .catch((e) => {
-  //       context.error(new Error())
-  //     })
-  // },
   computed: {
     loadedPosts () {
       return this.$store.getters.loadedPosts
     }
   }
-  // created () {
-  //   this.$store.dispatch('setPosts', this.loadedPosts)
-  // }
 }
 </script>
 

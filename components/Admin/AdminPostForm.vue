@@ -52,14 +52,12 @@ export default {
     return {
       editedPost: this.post
         ? this.post
-        : { author: '111', title: '', thumb: '', prevText: '', content: '' }
+        : { author: '', title: '', thumb: '', prevText: '', content: '' }
     }
   },
   methods: {
     onSave () {
       // save the post
-      // eslint-disable-next-line no-console
-      console.log(this.editedPost)
       this.$emit('submit', this.editedPost)
     },
     onCancel () {
