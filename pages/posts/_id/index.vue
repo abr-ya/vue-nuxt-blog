@@ -7,20 +7,23 @@
         </h1>
         <div class="post-details">
           <div class="post-detail">
-            Last updated {{ post.date }}
+            created: {{ `${date} ${time}` }}
           </div>
           <div class="post-detail">
-            Written by {{ post.author }}
+            written by: {{ post.author }}
           </div>
         </div>
-        <p class="post-content">
+        <div class="post-img">
+          <img :src="post.thumb">
+        </div>
+        <div class="post-content">
           {{ post.content }}
-        </p>
+        </div>
       </section>
-      <section class="post-feedback">
+      <!-- <section class="post-feedback">
         <p>Let me know ...</p>
         <p>ID из роутера: {{ $route.params.id }}</p>
-      </section>
+      </section> -->
     </div>
   </div>
 </template>
@@ -32,7 +35,10 @@ export default {
   asyncData (context) {
     return axios.get(`${process.env.BACK}/posts/${context.params.id}.json`)
       .then((res) => {
-        return { post: res.data }
+        const temp = new Date(res.data.date)
+        const date = `${temp.getDate()}-${temp.getMonth() + 1}-${temp.getFullYear()}`
+        const time = `${temp.getHours()}:${temp.getMinutes()}:${temp.getSeconds()}`
+        return { post: res.data, date, time }
       })
       .catch(e => context.error(e))
   }
@@ -62,11 +68,11 @@ export default {
   }
 
   .post-details {
-    padding: 10px;
+    padding: 0;
     box-sizing: border-box;
-    border-bottom: 3px solid #ccc;
+    border-bottom: 1px solid #ccc;
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
     flex-direction: column;
   }
@@ -79,7 +85,19 @@ export default {
 
   .post-detail {
     color: rgb(88, 88, 88);
-    margin: 0 10px;
+    margin: 0;
+  }
+
+  .post-content {
+    text-align: left;
+  }
+
+  .post-img {
+    margin-bottom: 20px;;
+  }
+
+  .post-img img {
+    width: 100%;
   }
 
   .post-feedback a {

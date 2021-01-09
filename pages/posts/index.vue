@@ -24,6 +24,7 @@ export default {
 </script>
 
 <style scoped>
-/* .posts-page {
-} */
+.posts-page {
+  padding: 30px 0;
+}
 </style>
