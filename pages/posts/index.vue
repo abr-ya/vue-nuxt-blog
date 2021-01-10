@@ -12,7 +12,7 @@
 import PostsList from '@/components/Posts/PostsList'
 
 export default {
-  middleware: 'log',
+  // middleware: 'log',
   components: {
     PostsList
   },

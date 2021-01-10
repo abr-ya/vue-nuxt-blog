@@ -44,15 +44,14 @@ export default {
   },
   methods: {
     onSubmit () {
-      this.$axios.$post(
-        `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${process.env.API}`,
-        {
-          email: this.mail,
-          password: this.pass,
-          returnSecureToken: true
-        }
-      // eslint-disable-next-line no-console
-      ).then((res) => { console.log(res) })
+      this.$store.dispatch('authUser', {
+        isLogin: this.isLogin,
+        mail: this.mail,
+        pass: this.pass
+      })
+        .then(() => {
+          this.$router.push('/admin')
+        })
         // eslint-disable-next-line no-console
         .catch((e) => { console.log(e) })
     }
