@@ -37,8 +37,15 @@ export default {
   // Modules (https://go.nuxtjs.dev/config-modules)
   modules: [
     // https://go.nuxtjs.dev/bootstrap
-    'bootstrap-vue/nuxt'
+    'bootstrap-vue/nuxt',
+    '@nuxtjs/axios'
   ],
+
+  axios: {
+    baseURL: process.env.BACK ||
+      'https://nuxt-blog-356f0-default-rtdb.europe-west1.firebasedatabase.app/',
+    credentials: false
+  },
 
   // Build Configuration (https://go.nuxtjs.dev/config-build)
   build: {
@@ -46,6 +53,12 @@ export default {
 
   // env config
   env: {
-    BACK: process.env.BACK || 'https://nuxt-blog-356f0-default-rtdb.europe-west1.firebasedatabase.app/'
+    BACK: process.env.BACK ||
+      'https://nuxt-blog-356f0-default-rtdb.europe-west1.firebasedatabase.app/',
+    API: 'AIzaSyCCGxYcJE3h2uSiLvg48SVXxgai8ZKE7to'
   }
+
+  // router: {
+  //   middleware: 'log'
+  // }
 }

@@ -1,11 +1,11 @@
 <template>
   <div class="admin-auth-page">
     <div class="auth-container">
-      <form>
-        <AppControlInput type="email">
+      <form @submit.prevent="onSubmit">
+        <AppControlInput v-model="mail" type="email">
           E-Mail Address
         </AppControlInput>
-        <AppControlInput type="password">
+        <AppControlInput v-model="pass" type="password">
           Password
         </AppControlInput>
         <AppButton type="submit">
@@ -37,7 +37,24 @@ export default {
   },
   data () {
     return {
-      isLogin: true
+      isLogin: true,
+      mail: '',
+      pass: ''
+    }
+  },
+  methods: {
+    onSubmit () {
+      this.$axios.$post(
+        `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${process.env.API}`,
+        {
+          email: this.mail,
+          password: this.pass,
+          returnSecureToken: true
+        }
+      // eslint-disable-next-line no-console
+      ).then((res) => { console.log(res) })
+        // eslint-disable-next-line no-console
+        .catch((e) => { console.log(e) })
     }
   }
 }
