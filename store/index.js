@@ -37,13 +37,14 @@ const createStore = () => {
             for (const key in res.data) {
               postArray.push({ id: key, ...res.data[key] })
             }
+            console.log('save posts in store', postArray.length)
             vuexContext.commit('setPosts', postArray)
           })
           .catch(e => context.error(e))
       },
-      setPosts (vuexContext, posts) {
-        vuexContext.commit('setPosts', posts)
-      },
+      // setPosts (vuexContext, posts) {
+      //   vuexContext.commit('setPosts', posts)
+      // },
       addPost (vuexContext, newPost) {
         const datedPost = { ...newPost, date: new Date() }
         return axios.post(
@@ -86,44 +87,49 @@ const createStore = () => {
             localStorage.setItem('token', res.idToken)
             Cookie.set('token', res.idToken)
             const liveToS = Math.floor(new Date() / 1000) + +res.expiresIn
-            console.log(liveToS)
+            console.log('новый токен будет жить до: ', liveToS)
             localStorage.setItem('tokenLiveTo', liveToS)
             Cookie.set('tokenLiveTo', liveToS)
-            // vuexContext.dispatch('setLogoutTimer', res.expiresIn)
           })
           .catch((e) => { console.log(e) })
       },
-      // setLogoutTimer (vuexContext, time) {
-      //   console.log(`токен будет очищен через ${time} секунд`)
-      //   setTimeout(() => {
-      //     vuexContext.commit('clearToken')
-      //   }, time * 1000)
-      // },
       // на сервер - из кук, на клиенте - из LS
       initAuth (vueContext, headers) {
-        let token = ''
+        let token = 'temp'
         let liveTime
         if (headers) {
-          if (headers.cookie) {
+          // сервер
+          if (headers.cookie && headers.cookie.includes('token=') &&
+          headers.cookie.includes('tokenLiveTo=')) {
             const cooks = headers.cookie.split(';').map(c => (c.trim()))
-            // console.log('cooks:', cooks)
-            const token = cooks.find(c => c.startsWith('token=')).split('=')[1]
+            token = cooks.find(c => c.startsWith('token=')).split('=')[1]
             const tokenLiveToCo = cooks.find(c => c.startsWith('tokenLiveTo=')).split('=')[1]
             liveTime = tokenLiveToCo - Math.floor(new Date() / 1000)
-            console.log('token:', token)
+            console.log('token:', token.slice(1, 10), '...')
             console.log('взяли токен из куки, ему жить секунд: ', liveTime)
           }
         } else {
+          // клиент
           token = localStorage.getItem('token')
           const tokenLiveTo = +localStorage.getItem('tokenLiveTo')
           liveTime = tokenLiveTo - Math.floor(new Date() / 1000)
           console.log('взяли токен из LS, ему жить секунд: ', liveTime)
         }
+        console.log('жив ли токен?', liveTime > 0 && token !== 'temp')
         if (liveTime > 0 && token) {
-          // vueContext.dispatch('setLogoutTimer', liveTime)
           vueContext.commit('setToken', token)
         } else {
-          vueContext.commit('clearToken')
+          vueContext.dispatch('logout') // чистим всё! - падает фронт - доб. проверку!
+          // vueContext.commit('clearToken')
+        }
+      },
+      logout (vueContext) {
+        vueContext.commit('clearToken')
+        Cookie.remove('token')
+        Cookie.remove('tokenLiveTo')
+        if (process.client) {
+          localStorage.removeItem('token')
+          localStorage.removeItem('tokenLiveTo')
         }
       }
     },

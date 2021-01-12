@@ -10,7 +10,7 @@ import TheHeader from '@/components/Navigation/TheHeader'
 
 export default {
   name: 'Admin',
-  middleware: ['is-ls-user', 'need-login'],
+  middleware: ['is-user-login', 'need-login', 'posts-test'],
   components: {
     TheHeader
   }

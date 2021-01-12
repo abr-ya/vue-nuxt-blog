@@ -15,7 +15,7 @@ import TheSidenav from '@/components/Navigation/TheSidenav'
 
 export default {
   name: 'Base',
-  // middleware: 'log',
+  middleware: 'posts-test',
   components: {
     TheHeader,
     TheSidenav
