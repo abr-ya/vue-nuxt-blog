@@ -30,7 +30,6 @@ import AppButton from '@/components/UI/AppButton'
 
 export default {
   name: 'AdminAuthPage',
-  layout: 'admin',
   components: {
     AppControlInput,
     AppButton

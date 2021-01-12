@@ -18,6 +18,7 @@ import PostsList from '@/components/Posts/PostsList'
 import AppButton from '@/components/UI/AppButton'
 
 export default {
+  layout: 'admin',
   components: {
     PostsList,
     AppButton

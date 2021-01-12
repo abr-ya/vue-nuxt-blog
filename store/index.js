@@ -22,10 +22,14 @@ const createStore = () => {
       },
       setToken (state, token) {
         state.token = token
+      },
+      clearToken (state) {
+        state.token = null
       }
     },
     actions: {
       nuxtServerInit (vuexContext, context) {
+        console.log('nuxtServerInit')
         return axios.get(`${process.env.BACK}posts.json`)
           .then((res) => {
             const postArray = []
@@ -84,14 +88,39 @@ const createStore = () => {
             // eslint-disable-next-line no-console
             console.log(res)
             vuexContext.commit('setToken', res.idToken)
+            localStorage.setItem('token', res.idToken)
+            console.log(new Date(), res.expiresIn)
+            console.log(+res.expiresIn + +new Date())
+            localStorage.setItem('tokenLiveTo', +res.expiresIn + +new Date())
+            vuexContext.dispatch('setLogoutTimer', res.expiresIn)
           })
           // eslint-disable-next-line no-console
           .catch((e) => { console.log(e) })
+      },
+      setLogoutTimer (vuexContext, time) {
+        // eslint-disable-next-line no-console
+        console.log(`токен будет очищен через ${time} секунд`)
+        setTimeout(() => {
+          vuexContext.commit('clearToken')
+        }, time * 1000)
+      },
+      initAuth (vueContext) {
+        const token = localStorage.getItem('token')
+        const tokenLiveTo = localStorage.getItem('tokenLiveTo')
+
+        console.log(+new Date(), +tokenLiveTo, +new Date() < +tokenLiveTo)
+        if (+new Date() < +tokenLiveTo && token) {
+          vueContext.dispatch('setLogoutTimer', +tokenLiveTo - +new Date())
+          vueContext.commit('setToken', token)
+        }
       }
     },
     getters: {
       loadedPosts (state) {
         return state.loadedPosts
+      },
+      isLogin (state) {
+        return state.token != null
       }
     }
   })

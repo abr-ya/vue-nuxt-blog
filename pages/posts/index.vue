@@ -1,10 +1,7 @@
 <template>
   <div class="posts-page container">
     <h1>Posts page</h1>
-    <PostsList v-if="loadedPosts.length" :posts="loadedPosts" /><!-- section -->
-    <div v-else>
-      Постов нет или они грузятся...
-    </div>
+    <PostsList :posts="loadedPosts" /><!-- section -->
   </div>
 </template>
 
