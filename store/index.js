@@ -1,5 +1,7 @@
+/* eslint-disable no-console */
 import Vuex from 'vuex'
 import axios from 'axios'
+import Cookie from 'js-cookie'
 
 const createStore = () => {
   return new Vuex.Store({
@@ -29,7 +31,6 @@ const createStore = () => {
     },
     actions: {
       nuxtServerInit (vuexContext, context) {
-        console.log('nuxtServerInit')
         return axios.get(`${process.env.BACK}posts.json`)
           .then((res) => {
             const postArray = []
@@ -50,11 +51,9 @@ const createStore = () => {
           datedPost
         )
           .then((res) => {
-            // eslint-disable-next-line no-console
             console.log(res) // убедимся, что всё хорошо
             vuexContext.commit('addPost', { id: res.data.name, ...datedPost }) // добавим в store
           })
-          // eslint-disable-next-line no-console
           .catch(error => console.log(error))
       },
       editPost (vuexContext, editedPost) {
@@ -63,11 +62,9 @@ const createStore = () => {
           editedPost
         )
           .then((res) => {
-            // eslint-disable-next-line no-console
             console.log(res) // убедимся, что всё хорошо
             vuexContext.commit('editPost', editedPost) // добавим в store
           })
-          // eslint-disable-next-line no-console
           .catch(error => console.log(error))
       },
       authUser (vuexContext, authData) {
@@ -83,35 +80,50 @@ const createStore = () => {
             returnSecureToken: true
           })
           .then((res) => {
-            // eslint-disable-next-line no-console
             console.log(!authData.isLogin ? 'SignUp' : 'SignIn')
-            // eslint-disable-next-line no-console
             console.log(res)
             vuexContext.commit('setToken', res.idToken)
             localStorage.setItem('token', res.idToken)
-            console.log(new Date(), res.expiresIn)
-            console.log(+res.expiresIn + +new Date())
-            localStorage.setItem('tokenLiveTo', +res.expiresIn + +new Date())
-            vuexContext.dispatch('setLogoutTimer', res.expiresIn)
+            Cookie.set('token', res.idToken)
+            const liveToS = Math.floor(new Date() / 1000) + +res.expiresIn
+            console.log(liveToS)
+            localStorage.setItem('tokenLiveTo', liveToS)
+            Cookie.set('tokenLiveTo', liveToS)
+            // vuexContext.dispatch('setLogoutTimer', res.expiresIn)
           })
-          // eslint-disable-next-line no-console
           .catch((e) => { console.log(e) })
       },
-      setLogoutTimer (vuexContext, time) {
-        // eslint-disable-next-line no-console
-        console.log(`токен будет очищен через ${time} секунд`)
-        setTimeout(() => {
-          vuexContext.commit('clearToken')
-        }, time * 1000)
-      },
-      initAuth (vueContext) {
-        const token = localStorage.getItem('token')
-        const tokenLiveTo = localStorage.getItem('tokenLiveTo')
-
-        console.log(+new Date(), +tokenLiveTo, +new Date() < +tokenLiveTo)
-        if (+new Date() < +tokenLiveTo && token) {
-          vueContext.dispatch('setLogoutTimer', +tokenLiveTo - +new Date())
+      // setLogoutTimer (vuexContext, time) {
+      //   console.log(`токен будет очищен через ${time} секунд`)
+      //   setTimeout(() => {
+      //     vuexContext.commit('clearToken')
+      //   }, time * 1000)
+      // },
+      // на сервер - из кук, на клиенте - из LS
+      initAuth (vueContext, headers) {
+        let token = ''
+        let liveTime
+        if (headers) {
+          if (headers.cookie) {
+            const cooks = headers.cookie.split(';').map(c => (c.trim()))
+            // console.log('cooks:', cooks)
+            const token = cooks.find(c => c.startsWith('token=')).split('=')[1]
+            const tokenLiveToCo = cooks.find(c => c.startsWith('tokenLiveTo=')).split('=')[1]
+            liveTime = tokenLiveToCo - Math.floor(new Date() / 1000)
+            console.log('token:', token)
+            console.log('взяли токен из куки, ему жить секунд: ', liveTime)
+          }
+        } else {
+          token = localStorage.getItem('token')
+          const tokenLiveTo = +localStorage.getItem('tokenLiveTo')
+          liveTime = tokenLiveTo - Math.floor(new Date() / 1000)
+          console.log('взяли токен из LS, ему жить секунд: ', liveTime)
+        }
+        if (liveTime > 0 && token) {
+          // vueContext.dispatch('setLogoutTimer', liveTime)
           vueContext.commit('setToken', token)
+        } else {
+          vueContext.commit('clearToken')
         }
       }
     },
